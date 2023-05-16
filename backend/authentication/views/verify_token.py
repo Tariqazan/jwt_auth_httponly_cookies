@@ -14,17 +14,18 @@ class VerifyToken(APIView):
     def get(self, request):
         access_token = request.COOKIES.get(
             settings.SIMPLE_JWT['AUTH_COOKIE_ACCESS_TOKEN']) or None
+        refresh_token = request.COOKIES.get(
+            settings.SIMPLE_JWT['AUTH_COOKIE_REFRESH_TOKEN']) or None
 
         if access_token is not None:
             try:
-                AccessToken(access_token)
-                response = {'valid': True, 'message': 'Token is Valid'}
+                token_info = AccessToken(access_token)
+                response = {'valid': True, 'message': 'Token is Valid',
+                            'exp': token_info['exp'], 'refresh': refresh_token}
                 return Response(response)
 
             except TokenError:
-                refresh_token = request.COOKIES.get(
-                    settings.SIMPLE_JWT['AUTH_COOKIE_REFRESH_TOKEN']) or None
-                response = {'token': refresh_token,
+                response = {'refresh': refresh_token,
                             'valid': False, 'message': 'Token is Invalid'}
                 return Response(response)
         else:

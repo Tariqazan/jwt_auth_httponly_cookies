@@ -17,28 +17,8 @@ class CustomTokenRefreshView(TokenRefreshView):
         response_data = super().post(request, *args, **kwargs)
         access_token = response_data.data['access']
         refresh_token = response_data.data['refresh']
-        print("-"*10)
-        print('access_token -->', access_token)
-        print("*"*10)
-        print('refresh_token -->', refresh_token)
-        print("+"*10)
         response = Response()
-        response.delete_cookie("access_token")
-        response.set_cookie(
-            key=settings.SIMPLE_JWT['AUTH_COOKIE_ACCESS_TOKEN'],
-            value=access_token,
-            expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-            secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
-            httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-            samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
-        )
-        response.set_cookie(
-            key=settings.SIMPLE_JWT['AUTH_COOKIE_REFRESH_TOKEN'],
-            value=refresh_token,
-            expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-            secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
-            httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-            samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
-        )
-        csrf.get_token(request)
-        return Response({'access': access_token, 'refresh': refresh_token})
+        response.set_cookie('access_token', access_token)
+        response.set_cookie('refresh_token', refresh_token)
+        response.data = {'access_token': access_token, 'refresh_token': refresh_token}
+        return response

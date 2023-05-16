@@ -4,11 +4,11 @@ import { userReducer } from "../slices/user/User";
 import { nutritionReducer } from "../slices/nutrition/Nutrition";
 import { userNutritionReducer } from "../slices/userNutritions/UserNutritions";
 import { addUserNutritionReducer } from "../slices/addUserNutritions/AddUserNutritions";
-import { isAuthenticatedReducer } from "../slices/auth/verifyToken/VerifyToken";
+import { tokenInfoReducer } from "../slices/auth/verifyToken/VerifyToken";
 
 export default configureStore({
     reducer: {
-        isAuthenticated: isAuthenticatedReducer,
+        tokenInfo: tokenInfoReducer,
         auth: authReducer,
         user: userReducer,
         nutrition: nutritionReducer,

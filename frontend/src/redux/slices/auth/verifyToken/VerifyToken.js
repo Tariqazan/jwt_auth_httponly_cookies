@@ -3,8 +3,8 @@ import { initialState } from "../../../InitialState";
 import { verifyToken } from "./Service";
 
 
-const isAuthenticatedSlice = createSlice({
-    name: "isAuthenticated",
+const tokenInfoSlice = createSlice({
+    name: "tokenInfo",
     initialState,
     extraReducers: (builder) => {
       builder.addCase(verifyToken.pending, (state) => {
@@ -14,17 +14,17 @@ const isAuthenticatedSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
         state.error = "";
-        state.isAuthenticated = true;
+        state.tokenInfo = true;
       });
       builder.addCase(verifyToken.rejected, (state, action) => {
         state.loading = false;
         state.data = null;
         state.error = action.error.message;
-        state.isAuthenticated = false;
+        state.tokenInfo = false;
       });
     },
   });
   
 
 
-export const isAuthenticatedReducer = isAuthenticatedSlice.reducer
+export const tokenInfoReducer = tokenInfoSlice.reducer
